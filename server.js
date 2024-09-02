@@ -1,13 +1,91 @@
-import express from 'express';
+import express from "express";
+import OpenAI from "openai";
+import "dotenv/config";
+import cors from "cors";
 
+const openai = new OpenAI();
 const app = express();
 const port = 3104;
 
-app.get('/', (req, res) => {
-  res.send('Hello world!');
+app.use(cors());
+app.use(express.json({ limit: "100mb" }));
+
+app.post("/generate-reminder", async (req, res) => {
+  try {
+    const { base64Image } = req.body;
+
+    if (!base64Image) {
+      return res.status(400).send("No image data provided");
+    }
+
+    const today = new Date().toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        {
+          role: "system",
+          content: [
+            {
+              type: "text",
+              text: "Only respond with valid text for ICS files, with nothing else before or after the valid ICS event file text, do not include ```ics or ```",
+            },
+          ],
+        },
+        {
+          role: "system",
+          content: [
+            {
+              type: "text",
+              text: `always use this format: BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Leo Mancini Design//Parking Sign Reminder Generator//EN
+METHOD:PUBLISH
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:parking-calendar@leo.gd
+DTSTAMP:XXXXXXTXXXXXXZ
+DTSTART;TZID=America/New_York:XXXXXXTXXXXXXZ (30 mins before the start of the parking restriction)
+DTEND;TZID=America/New_York:XXXXXXTXXXXXXZ (30 mins max duration)
+SUMMARY:Move car before XX:XX
+DESCRIPTION:Automated reminder to move car before parking restriction starts at DAY at XX:XX
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR`,
+            },
+          ],
+        },
+        {
+          role: "user",
+          content: [
+            {
+              type: "text",
+              text: `Assume US EASTERN TIME ZONE and include US EASTERN TIME ZONE in the ICS data, assume the next closest day after ${today} (but not today), generate the text for an ICS file for 30 mins before the time of the start of the restriction to remind me to move the car before the parking restriction starts`,
+            },
+            {
+              type: "image_url",
+              image_url: {
+                url: `data:image/jpeg;base64,${base64Image}`,
+              },
+            },
+          ],
+        },
+      ],
+      max_tokens: 300,
+    });
+
+    res.json(response.choices[0].message.content);
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send("An error occurred while processing the image");
+  }
 });
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
-
