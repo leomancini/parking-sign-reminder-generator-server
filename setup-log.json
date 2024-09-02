@@ -1,0 +1,9 @@
+{
+  "service_id": "parking-sign-reminder-generator-server",
+  "service_name": "Parking Sign Reminder Generator Server",
+  "domain": "https://parking-sign-reminder-generator-server.noshado.ws",
+  "host": "localhost",
+  "port": "3104",
+  "author": "leo",
+  "created_on": "Mon 02 Sep 2024 03:09:47 PM EDT"
+}
