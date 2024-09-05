@@ -1,6 +1,7 @@
 import express from "express";
 import OpenAI from "openai";
 import { zodResponseFormat } from "openai/helpers/zod";
+import { z } from "zod";
 import "dotenv/config";
 import cors from "cors";
 
