@@ -33,7 +33,7 @@ app.post("/generate-reminder", async (req, res) => {
     });
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "gpt-4o-2024-08-06",
       response_format: zodResponseFormat(responseFormat, "response"),
       messages: [
         {
@@ -96,7 +96,7 @@ END:VCALENDAR`,
       max_tokens: 300,
     });
 
-    const result = JSON.parse(response.choices[0].message.content);
+    const result = response.choices[0].message.parsed;
     res.json(result);
   } catch (error) {
     console.error("Error:", error);
