@@ -96,7 +96,7 @@ END:VCALENDAR`,
       max_tokens: 300,
     });
 
-    const result = response.choices[0].message.parsed;
+    const result = JSON.parse(response.choices[0].message.content);
     res.json(result);
   } catch (error) {
     console.error("Error:", error);
