@@ -90,7 +90,7 @@ END:VCALENDAR`,
     res.json(response.choices[0].message.content);
   } catch (error) {
     console.error("Error:", error);
-    res.status(500).send("An error occurred while processing the image");
+    res.status(500).send(error);
   }
 });
 
