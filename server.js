@@ -41,7 +41,7 @@ app.post("/generate-reminder", async (req, res) => {
           content: [
             {
               type: "text",
-              text: "If a time and date is found, respond with valid text for ICS files, with nothing else before or after the valid ICS event file text. Do not include ```ics or ```.",
+              text: "If a time and date is found, set timeAndDateFound to true, otherwise set to false",
             },
           ],
         },
@@ -50,7 +50,16 @@ app.post("/generate-reminder", async (req, res) => {
           content: [
             {
               type: "text",
-              text: `Always use this format: BEGIN:VCALENDAR
+              text: "Respond with valid text for ICS files, with nothing else before or after the valid ICS event file text. Do not include ```ics or ```.",
+            },
+          ],
+        },
+        {
+          role: "system",
+          content: [
+            {
+              type: "text",
+              text: `Always use this format for the ICS file: BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Leo Mancini Design//Parking Sign Reminder Generator//EN
 METHOD:PUBLISH
