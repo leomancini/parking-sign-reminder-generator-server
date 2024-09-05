@@ -1,5 +1,6 @@
 import express from "express";
 import OpenAI from "openai";
+import { zodResponseFormat } from "openai/helpers/zod";
 import "dotenv/config";
 import cors from "cors";
 
@@ -25,8 +26,14 @@ app.post("/generate-reminder", async (req, res) => {
       day: "numeric",
     });
 
+    const responseFormat = z.object({
+      timeAndDateFound: z.boolean(),
+      calendarFileData: z.string(),
+    });
+
     const response = await openai.chat.completions.create({
       model: "gpt-4o-mini",
+      response_format: zodResponseFormat(responseFormat, "response"),
       messages: [
         {
           role: "system",
@@ -53,7 +60,7 @@ DTSTAMP:XXXXXXTXXXXXXZ
 DTSTART;TZID=America/New_York:XXXXXXTXXXXXXZ (30 mins before the start of the parking restriction)
 DTEND;TZID=America/New_York:XXXXXXTXXXXXXZ (30 mins max duration)
 SUMMARY:Move car before XX:XX
-DESCRIPTION:Automated reminder to move car before parking restriction starts at DAY at XX:XX
+DESCRIPTION:Automated reminder to move car before parking restriction starts on XXXXXXX at XX:XX
 STATUS:CONFIRMED
 END:VEVENT
 END:VCALENDAR`,
