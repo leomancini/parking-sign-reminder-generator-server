@@ -17,7 +17,7 @@ app.post("/generate-reminder", async (req, res) => {
     const { base64Image } = req.body;
 
     if (!base64Image) {
-      return res.status(400).send("No image data provided");
+      return res.status(400).json({ error: "No image data provided" });
     }
 
     const today = new Date().toLocaleDateString("en-US", {
@@ -33,7 +33,7 @@ app.post("/generate-reminder", async (req, res) => {
     });
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "gpt-4o",
       response_format: zodResponseFormat(responseFormat, "response"),
       messages: [
         {
@@ -41,7 +41,7 @@ app.post("/generate-reminder", async (req, res) => {
           content: [
             {
               type: "text",
-              text: "if a time and date is found, respond with valid text for ICS files, with nothing else before or after the valid ICS event file text, do not include ```ics or ```",
+              text: "If a time and date is found, respond with valid text for ICS files, with nothing else before or after the valid ICS event file text. Do not include ```ics or ```.",
             },
           ],
         },
@@ -50,7 +50,7 @@ app.post("/generate-reminder", async (req, res) => {
           content: [
             {
               type: "text",
-              text: `always use this format: BEGIN:VCALENDAR
+              text: `Always use this format: BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Leo Mancini Design//Parking Sign Reminder Generator//EN
 METHOD:PUBLISH
@@ -87,10 +87,14 @@ END:VCALENDAR`,
       max_tokens: 300,
     });
 
-    res.json(response.choices[0].message.content);
+    const result = response.choices[0].message.content;
+    res.json({
+      timeAndDateFound: result.timeAndDateFound,
+      calendarFileData: result.calendarFileData,
+    });
   } catch (error) {
     console.error("Error:", error);
-    res.status(500).send(error);
+    res.status(500).json({ error: error.message });
   }
 });
 
