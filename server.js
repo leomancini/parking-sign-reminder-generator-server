@@ -59,7 +59,7 @@ app.post("/generate-reminder", async (req, res) => {
           content: [
             {
               type: "text",
-              text: `Always use this format for the ICS file: BEGIN:VCALENDAR
+              text: `Always use this exactformat for the ICS file: BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Leo Mancini Design//Parking Sign Reminder Generator//EN
 METHOD:PUBLISH
