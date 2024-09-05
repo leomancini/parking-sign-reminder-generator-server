@@ -97,10 +97,7 @@ END:VCALENDAR`,
     });
 
     const result = JSON.parse(response.choices[0].message.content);
-    res.json({
-      timeAndDateFound: result.timeAndDateFound,
-      calendarFileData: result.calendarFileData,
-    });
+    res.json(result);
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ error: error.message });
