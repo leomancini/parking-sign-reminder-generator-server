@@ -41,7 +41,7 @@ app.post("/generate-reminder", async (req, res) => {
           content: [
             {
               type: "text",
-              text: "Only respond with valid text for ICS files, with nothing else before or after the valid ICS event file text, do not include ```ics or ```",
+              text: "if a time and date is found, respond with valid text for ICS files, with nothing else before or after the valid ICS event file text, do not include ```ics or ```",
             },
           ],
         },
