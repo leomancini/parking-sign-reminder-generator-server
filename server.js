@@ -87,7 +87,7 @@ END:VCALENDAR`,
       max_tokens: 300,
     });
 
-    const result = response.choices[0].message.content;
+    const result = JSON.parse(response.choices[0].message.content);
     res.json({
       timeAndDateFound: result.timeAndDateFound,
       calendarFileData: result.calendarFileData,
