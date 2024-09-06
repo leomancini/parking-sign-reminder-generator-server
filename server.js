@@ -65,7 +65,7 @@ PRODID:-//Leo Mancini Design//Parking Sign Reminder Generator//EN
 METHOD:PUBLISH
 CALSCALE:GREGORIAN
 BEGIN:VEVENT
-UID:parking-calendar@leo.gd
+UID:parking-calendar-XXXXXXTXXXXXXZ@leo.gd
 DTSTAMP:XXXXXXTXXXXXXZ
 DTSTART;TZID=America/New_York:XXXXXXTXXXXXXZ (30 mins before the start of the parking restriction)
 DTEND;TZID=America/New_York:XXXXXXTXXXXXXZ (30 mins max duration)
