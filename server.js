@@ -69,7 +69,7 @@ UID:parking-calendar@leo.gd
 DTSTAMP:XXXXXXTXXXXXXZ
 DTSTART;TZID=America/New_York:XXXXXXTXXXXXXZ (30 mins before the start of the parking restriction)
 DTEND;TZID=America/New_York:XXXXXXTXXXXXXZ (30 mins max duration)
-SUMMARY:Move car before XX:XX AM/PM
+SUMMARY:Move car before XX:XX AM/PM (10 random digits)
 DESCRIPTION:Automated reminder to move car before parking restriction starts
 STATUS:CONFIRMED
 END:VEVENT
